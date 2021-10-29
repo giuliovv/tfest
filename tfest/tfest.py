@@ -34,14 +34,15 @@ class tfest:
             for s in freq])
         return np.square(np.linalg.norm((risp-H).reshape(-1, 1), axis=1)).sum() #+ np.abs(x).sum()
 
-    def frequency_response(self, method="fft"):
+    def frequency_response(self, method="fft", time=1):
         """
         method: "fft" or "density"
+        time: time for fft
 
         return: frequency response and frequency
         """
         if method == "fft":
-            frequency = fftfreq(len(self.u), 1/len(self.u))
+            frequency = fftfreq(len(self.u), time/len(self.u))
             H = fft(self.y)/fft(self.u)
         elif method == "density":
             cross_sd, frequency = csd(self.y, self.u)
@@ -51,13 +52,14 @@ class tfest:
         self.H = H
         return self.H, frequency
 
-    def estimate(self, npoles, nzeros, init_value=1, options={'xatol': 1e-2, 'disp': True}, method="fft"):
+    def estimate(self, npoles, nzeros, init_value=1, options={'xatol': 1e-2, 'disp': True}, method="fft", time=1):
         """
         npoles: number of poles
         nzeros: number of zeros
         init_value: initial value for optimization
         options: options for scipy.optimize.minimize
         method: "fft" or "density"
+        time: time for fft
 
         return: scipy.optimize.minimize.OptimizeResult
         """
@@ -68,7 +70,7 @@ class tfest:
         self.init_value = init_value
 
         x0 = [init_value]*(npoles+nzeros)
-        H, frequency = self.frequency_response(method=method)
+        H, frequency = self.frequency_response(method=method, time=time)
         pass_to_loss = lambda x: self.loss(x, nzeros, frequency, H)
         self.res = minimize(pass_to_loss, x0, method='nelder-mead', options=options)
         return self.res

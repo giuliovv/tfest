@@ -26,7 +26,7 @@ class TfEst:
         return: loss
         """
         zeros = x[:nzeros]
-        poles = x[zneros:]
+        poles = x[nzeros:]
         risp = np.array([
             (1+sum([a*1j*s**i for i, a in enumerate(zeros)]))/(1+sum([b*1j*s**i for i, b in enumerate(poles)]))
             for s in freq])

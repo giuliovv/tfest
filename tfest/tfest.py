@@ -28,9 +28,9 @@ class tfest:
         zeros = x[:nzeros]
         poles = x[nzeros:]
         risp = np.array([
-            (1+sum([a*1j*s**i for i, a in enumerate(zeros)]))/(1+sum([b*1j*s**i for i, b in enumerate(poles)]))
+            (sum([a*(1j*s)**i for i, a in enumerate(zeros)]))/(sum([b*(1j*s)**i for i, b in enumerate(poles)]))
             for s in freq])
-        return np.linalg.norm(H-risp).sum() # + np.abs(x.sum())
+        return np.square(np.linalg.norm((risp-H).reshape(-1, 1), axis=1)).sum() #+ np.abs(x).sum()
 
     def frequency_response(self):
         """
@@ -42,7 +42,7 @@ class tfest:
         self.H = cross_sd/power_sd
         return self.H, frequency
 
-    def estimate(self, npoles, nzeros, init_value=1, options={'xatol': 1e-4, 'disp': True}):
+    def estimate(self, npoles, nzeros, init_value=1, options={'xatol': 1e-2, 'disp': True}):
         """
         npoles: number of poles
         nzeros: number of zeros
@@ -51,6 +51,8 @@ class tfest:
 
         return: scipy.optimize.minimize.OptimizeResult
         """
+        npoles += 1
+        nzeros += 1
         self.npoles = npoles
         self.nzeros = nzeros
         self.init_value = init_value
@@ -69,8 +71,6 @@ class tfest:
             raise Exception("Please run .estimate(npoles, nzeros) before plotting.")
         zeros = list(reversed(self.res.x[:self.nzeros]))
         poles = list(reversed(self.res.x[self.nzeros:]))
-        zeros[-1] += 1
-        poles[-1] += 1
         return signal.lti(zeros, poles)
 
     def plot_bode(self):
@@ -82,9 +82,13 @@ class tfest:
         tf = self.get_transfer_function()
         w, mag, phase = tf.bode()
         plt.figure()
+        plt.title('Bode magnitude plot')
         plt.semilogx(w, mag)
+        plt.grid()
         plt.figure()
+        plt.title('Bode phase plot')
         plt.semilogx(w, phase)
+        plt.grid()
         plt.show()
            
     def plot(self):
@@ -96,9 +100,10 @@ class tfest:
         zeros = self.res.x[:self.nzeros]
         poles = self.res.x[self.nzeros:]
         risp = np.array([
-            (1+sum([a*1j*s**i for i, a in enumerate(zeros)]))/(1+sum([b*1j*s**i for i, b in enumerate(poles)]))
+            (sum([a*(1j*s)**i for i, a in enumerate(zeros)]))/(sum([b*(1j*s)**i for i, b in enumerate(poles)]))
             for s in self.frequency])
-        plt.plot(-np.log(risp), label="estimation")
+        plt.plot(np.log(risp), label="estimation")
         plt.plot(np.log(self.H), label="train data")
         plt.legend(loc="upper right")
+        plt.grid()
         plt.show()

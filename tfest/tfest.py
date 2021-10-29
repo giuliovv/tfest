@@ -36,6 +36,8 @@ class tfest:
 
     def frequency_response(self, method="fft"):
         """
+        method: "fft" or "density"
+
         return: frequency response and frequency
         """
         if method == "fft":

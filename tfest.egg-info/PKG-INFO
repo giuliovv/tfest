@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: tfest
+Version: 0.1.3
+Summary: Transfer function estimation based on frequency response.
+Home-page: https://github.com/giuliovv/tfest
+Author: Giulio Vaccari
+Author-email: io@giuliovaccari.it
+License: MIT
+Download-URL: https://github.com/giuliovv/tfest/archive/refs/tags/v0.1.3-alpha.tar.gz
+Description: # Tfest
+        Transfer function estimation with frequency response. Only works for SISO systems for now.
+        Python equivalent of MATLAB tfest
+        
+        ### Installation:
+        ```shell
+        pip install tfest
+        ```
+        
+        ### Example:
+        To get a scipy transfer function:
+        ```python
+        import tfest
+        # u: input
+        # y: output
+        te = tfest.tfest(u, y)
+        te.estimate()
+        te.get_transfer_function()
+        ```
+        To plot its bode diagram:
+        ```python
+        te.plot_bode()
+        ```
+        
+Keywords: tfest,frequency,matlab
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown

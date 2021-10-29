@@ -1,16 +1,16 @@
-from distutils.core import setup
+import setuptools
 with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
-setup(
+  README = fh.read()
+setuptools.setup(
   name = 'tfest',
   packages = ['tfest'],
   version = '0.1.3',
-  license='MIT',
-  description = 'Transfer function estimation based on frequency response.',
+  license="""MIT""",
+  description = """Transfer function estimation based on frequency response.""",
+  long_description_content_type="text/markdown",
+  long_description=README,
   author = 'Giulio Vaccari',
   author_email = 'io@giuliovaccari.it',
-  long_description=long_description,
-  long_description_content_type="text/markdown",
   url = 'https://github.com/giuliovv/tfest',
   download_url = 'https://github.com/giuliovv/tfest/archive/refs/tags/v0.1.3-alpha.tar.gz',
   keywords = ['tfest', 'frequency', 'matlab'],

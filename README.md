@@ -4,20 +4,20 @@ Python equivalent of MATLAB tfest
 
 ### Installation:
 ```shell
-  pip install tfest
+pip install tfest
 ```
 
 ### Example:
 To get a scipy transfer function:
 ```python
-  import tfest
-  # u: input
-  # y: output
-  te = tfest.tfest(u, y)
-  te.estimate()
-  te.get_transfer_function()
+import tfest
+# u: input
+# y: output
+te = tfest.tfest(u, y)
+te.estimate()
+te.get_transfer_function()
 ```
 To plot its bode diagram:
 ```python
-  te.plot_bode()
+te.plot_bode()
 ```

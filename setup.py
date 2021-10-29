@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'tfest',
   packages = ['tfest'],
-  version = '0.1',
+  version = '0.1.1',
   license='MIT',
   description = 'Transfer function estimation based on frequency response.',
   author = 'Giulio Vaccari',

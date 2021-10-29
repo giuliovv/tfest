@@ -1,1 +1,1 @@
-from tfest.tfest import TfEst
+from tfest.tfest import tfest

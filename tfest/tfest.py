@@ -5,7 +5,7 @@ from matplotlib.mlab import psd, csd
 from scipy.optimize import minimize
 from scipy import signal
 
-class TfEst:
+class tfest:
     def __init__(self, u, y):
         self.u = u
         self.y = y

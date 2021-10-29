@@ -16,7 +16,7 @@ class tfest:
         self.nzeros = 0
         self.init_value = 1
 
-    def loss(x, nzeros, freq, H):
+    def loss(self, x, nzeros, freq, H):
         """
         x: array of zeros and poles
         nzeros: number of zeros
@@ -71,7 +71,7 @@ class tfest:
         poles = reversed(self.res.x[self.nzeros:])
         zeros[-1] += 1
         poles[-1] += 1
-        return signal.TransferFunction(zeros, poles)
+        return signal.lti(zeros, poles)
 
     def plot_bode(self):
         """

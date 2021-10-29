@@ -16,17 +16,17 @@ class TfEst:
         self.nzeros = 0
         self.init_value = 1
 
-    def loss(x, npoles, freq, H):
+    def loss(x, nzeros, freq, H):
         """
         x: array of zeros and poles
-        npoles: number of poles
+        nzeros: number of zeros
         freq: frequency
         H: frequency response
 
         return: loss
         """
-        poles = x[:npoles]
-        zeros = x[npoles:]
+        zeros = x[:nzeros]
+        poles = x[zneros:]
         risp = np.array([
             (1+sum([a*1j*s**i for i, a in enumerate(zeros)]))/(1+sum([b*1j*s**i for i, b in enumerate(poles)]))
             for s in freq])
@@ -57,7 +57,7 @@ class TfEst:
 
         x0 = [init_value]*(npoles+nzeros)
         H, frequency = self.frequency_response()
-        pass_to_loss = lambda x: self.loss(x, npoles, frequency, H)
+        pass_to_loss = lambda x: self.loss(x, nzeros, frequency, H)
         self.res = minimize(pass_to_loss, x0, method='nelder-mead', options=options)
         return self.res
 
@@ -67,18 +67,34 @@ class TfEst:
         """
         if self.res == None:
             raise Exception("Please run .estimate(npoles, nzeros) before plotting.")
-        zeros = self.res.x[:self.npoles]
-        poles = self.res.x[self.npoles:]
+        zeros = reversed(self.res.x[:self.nzeros])
+        poles = reversed(self.res.x[self.nzeros:])
+        zeros[-1] += 1
+        poles[-1] += 1
         return signal.TransferFunction(zeros, poles)
-    
+
+    def plot_bode(self):
+        """
+        Plot the bode diagram
+        """
+        if self.res == None:
+            raise Exception("Please run .estimate(npoles, nzeros) before plotting.")
+        tf = self.get_transfer_function()
+        w, mag, phase = tf.bode()
+        plt.figure()
+        plt.semilogx(w, mag)
+        plt.figure()
+        plt.semilogx(w, phase)
+        plt.show()
+           
     def plot(self):
         """
         Plot the frequency response and the transfer function
         """
         if self.res == None:
             raise Exception("Please run .estimate(npoles, nzeros) before plotting.")
-        zeros = self.res.x[:self.npoles]
-        poles = self.res.x[self.npoles:]
+        zeros = self.res.x[:self.nzeros]
+        poles = self.res.x[self.nzeros:]
         risp = np.array([
             (1+sum([a*1j*s**i for i, a in enumerate(zeros)]))/(1+sum([b*1j*s**i for i, b in enumerate(poles)]))
             for s in self.frequency])

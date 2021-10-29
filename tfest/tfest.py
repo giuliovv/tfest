@@ -67,8 +67,8 @@ class tfest:
         """
         if self.res == None:
             raise Exception("Please run .estimate(npoles, nzeros) before plotting.")
-        zeros = reversed(self.res.x[:self.nzeros])
-        poles = reversed(self.res.x[self.nzeros:])
+        zeros = list(reversed(self.res.x[:self.nzeros]))
+        poles = list(reversed(self.res.x[self.nzeros:]))
         zeros[-1] += 1
         poles[-1] += 1
         return signal.lti(zeros, poles)

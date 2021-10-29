@@ -5,6 +5,8 @@ from matplotlib.mlab import psd, csd
 from scipy.optimize import minimize
 from scipy import signal
 
+from numpy.fft import fft, fftfreq
+
 class tfest:
     def __init__(self, u, y):
         self.u = u
@@ -32,17 +34,22 @@ class tfest:
             for s in freq])
         return np.square(np.linalg.norm((risp-H).reshape(-1, 1), axis=1)).sum() #+ np.abs(x).sum()
 
-    def frequency_response(self):
+    def frequency_response(self, method="fft"):
         """
         return: frequency response and frequency
         """
-        cross_sd, frequency = csd(self.y, self.u)
-        power_sd, _ = psd(self.u)
+        if method == "fft":
+            frequency = fftfreq(len(self.u), 1/len(self.u))
+            H = fft(self.y)/fft(self.u)
+        else:
+            cross_sd, frequency = csd(self.y, self.u)
+            power_sd, _ = psd(self.u)
+            H = cross_sd/power_sd
         self.frequency = frequency
-        self.H = cross_sd/power_sd
+        self.H = H
         return self.H, frequency
 
-    def estimate(self, npoles, nzeros, init_value=1, options={'xatol': 1e-2, 'disp': True}):
+    def estimate(self, npoles, nzeros, init_value=1, options={'xatol': 1e-2, 'disp': True}, method="fft"):
         """
         npoles: number of poles
         nzeros: number of zeros
@@ -58,7 +65,7 @@ class tfest:
         self.init_value = init_value
 
         x0 = [init_value]*(npoles+nzeros)
-        H, frequency = self.frequency_response()
+        H, frequency = self.frequency_response(method=method)
         pass_to_loss = lambda x: self.loss(x, nzeros, frequency, H)
         self.res = minimize(pass_to_loss, x0, method='nelder-mead', options=options)
         return self.res
@@ -71,6 +78,7 @@ class tfest:
             raise Exception("Please run .estimate(npoles, nzeros) before plotting.")
         zeros = list(reversed(self.res.x[:self.nzeros]))
         poles = list(reversed(self.res.x[self.nzeros:]))
+        print(zeros, poles)
         return signal.lti(zeros, poles)
 
     def plot_bode(self):

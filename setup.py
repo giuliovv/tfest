@@ -8,7 +8,7 @@ setup(
   author = 'Giulio Vaccari',
   author_email = 'io@giuliovaccari.it',
   url = 'https://github.com/giuliovv/tfest',
-  download_url = 'https://github.com/giuliovv/tfest/archive/refs/tags/v0.1-alpha.tar.gz',
+  download_url = 'https://github.com/giuliovv/tfest/archive/refs/tags/v0.1.1-alpha.tar.gz',
   keywords = ['tfest', 'frequency', 'matlab'],
   install_requires=[
           'matplotlib',

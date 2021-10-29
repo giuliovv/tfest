@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
   name = 'tfest',
   packages = ['tfest'],
-  version = '0.1.2',
+  version = '0.1.3',
   license='MIT',
   description = 'Transfer function estimation based on frequency response.',
   author = 'Giulio Vaccari',
@@ -12,7 +12,7 @@ setup(
   long_description=long_description,
   long_description_content_type="text/markdown",
   url = 'https://github.com/giuliovv/tfest',
-  download_url = 'https://github.com/giuliovv/tfest/archive/refs/tags/v0.1.2-alpha.tar.gz',
+  download_url = 'https://github.com/giuliovv/tfest/archive/refs/tags/v0.1.3-alpha.tar.gz',
   keywords = ['tfest', 'frequency', 'matlab'],
   install_requires=[
           'matplotlib',

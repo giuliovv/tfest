@@ -41,7 +41,7 @@ class tfest:
         if method == "fft":
             frequency = fftfreq(len(self.u), 1/len(self.u))
             H = fft(self.y)/fft(self.u)
-        else:
+        elif method == "density":
             cross_sd, frequency = csd(self.y, self.u)
             power_sd, _ = psd(self.u)
             H = cross_sd/power_sd
@@ -55,6 +55,7 @@ class tfest:
         nzeros: number of zeros
         init_value: initial value for optimization
         options: options for scipy.optimize.minimize
+        method: "fft" or "density"
 
         return: scipy.optimize.minimize.OptimizeResult
         """

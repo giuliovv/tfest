@@ -14,10 +14,15 @@ import tfest
 # u: input
 # y: output
 te = tfest.tfest(u, y)
-te.estimate()
+# n_zeros, n_poles
+te.estimate(3, 4)
 te.get_transfer_function()
 ```
 To plot its bode diagram:
 ```python
 te.plot_bode()
+```
+Default method to calculate the frequency response Y/U is cross density/ power density, if you want to use frequency/frequency just set the method to "fft" and specify the time length of the simulation (in seconds, default is 1):
+```python
+te.estimate(3, 4, method="fft", time=1)
 ```

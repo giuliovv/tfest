@@ -34,7 +34,7 @@ class tfest:
             for s in freq])
         return np.square(np.linalg.norm((risp-H).reshape(-1, 1), axis=1)).sum() #+ np.abs(x).sum()
 
-    def frequency_response(self, method="fft", time=1):
+    def frequency_response(self, method="density", time=1):
         """
         method: "fft" or "density"
         time: time for fft
@@ -52,7 +52,7 @@ class tfest:
         self.H = H
         return self.H, frequency
 
-    def estimate(self, npoles, nzeros, init_value=1, options={'xatol': 1e-2, 'disp': True}, method="fft", time=1):
+    def estimate(self, nzeros, npoles, init_value=1, options={'xatol': 1e-2, 'disp': True}, method="density", time=1):
         """
         npoles: number of poles
         nzeros: number of zeros

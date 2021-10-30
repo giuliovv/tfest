@@ -33,9 +33,9 @@ class tfest:
         risp /= np.array([np.polyval(poles, s) for s in 1j*freq])
         return np.linalg.norm((risp-H).reshape(-1, 1), axis=1).sum() #+ np.abs(x).sum()
 
-    def frequency_response(self, method="density", time=1):
+    def frequency_response(self, method="h1", time=1):
         """
-        method: "fft" or "density"
+        method: "fft" or "h1" (default) or "h2"
         time: time for fft
 
         return: frequency response and frequency
@@ -47,10 +47,17 @@ class tfest:
             y_no_zero = y_f[np.nonzero(u_f)]
             frequency = fftfreq(u_f.size, d=time/len(self.u))[np.nonzero(u_f)]
             H = y_no_zero/u_no_zero
-        elif method == "density":
-            cross_sd, frequency = csd(self.y, self.u)
-            power_sd, _ = psd(self.u)
+        elif method == "h1":
+            # https://dsp.stackexchange.com/questions/71811/understanding-the-h1-and-h2-estimators
+            cross_sd, frequency = csd(self.y, self.u, Fs=time/len(self.u))
+            power_sd, _ = psd(self.u, Fs=time/len(self.u))
             H = cross_sd/power_sd
+        elif method == "h2":
+            cross_sd, frequency = csd(self.u, self.y, Fs=time/len(self.u))
+            power_sd, _ = psd(self.y, Fs=time/len(self.u))
+            H = power_sd/cross_sd
+        else:
+            raise Exception("Unknown method")
         self.frequency = frequency
         self.H = H
         return self.H, frequency

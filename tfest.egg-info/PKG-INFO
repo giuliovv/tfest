@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: tfest
-Version: 0.1.9
+Version: 0.1.10
 Summary: Transfer function estimation based on frequency response.
 Home-page: https://github.com/giuliovv/tfest
 Author: Giulio Vaccari
 Author-email: io@giuliovaccari.it
 License: MIT
-Download-URL: https://github.com/giuliovv/tfest/archive/refs/tags/v0.1.9-alpha.tar.gz
+Download-URL: https://github.com/giuliovv/tfest/archive/refs/tags/v0.1.10-alpha.tar.gz
 Description: # Tfest
         Transfer function estimation with frequency response. Only works for SISO systems for now.
         Python equivalent of MATLAB tfest

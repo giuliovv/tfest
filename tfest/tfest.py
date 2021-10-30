@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import warnings
 
 from matplotlib.mlab import psd, csd
 from scipy.optimize import minimize
@@ -33,13 +34,16 @@ class tfest:
         risp /= np.array([np.polyval(poles, s) for s in 1j*freq])
         return np.linalg.norm((risp-H).reshape(-1, 1), axis=1).sum() #+ np.abs(x).sum()
 
-    def frequency_response(self, method="h1", time=1):
+    def frequency_response(self, method="h1", time=None):
         """
         method: "fft" or "h1" (default) or "h2"
         time: time for fft
 
         return: frequency response and frequency
         """
+        if time == None:
+            warnings.warn("Setting default time=1")
+            time = 1
         if method == "fft":
             u_f = fft(self.u)
             y_f = fft(self.y)

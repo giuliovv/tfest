@@ -29,9 +29,8 @@ class tfest:
         """
         zeros = x[:nzeros]
         poles = x[nzeros:]
-        risp = np.array([
-            (sum([a*(1j*s)**i for i, a in enumerate(zeros)]))/(sum([b*(1j*s)**i for i, b in enumerate(poles)]))
-            for s in freq])
+        risp = np.array([np.polyval(zeros, s) for s in 1j*freq])
+        risp /= np.array([np.polyval(poles, s) for s in 1j*freq])
         return np.square(np.linalg.norm((risp-H).reshape(-1, 1), axis=1)).sum() #+ np.abs(x).sum()
 
     def frequency_response(self, method="density", time=1):
@@ -85,8 +84,8 @@ class tfest:
         """
         if self.res == None:
             raise Exception("Please run .estimate(npoles, nzeros) before plotting.")
-        zeros = list(reversed(self.res.x[:self.nzeros]))
-        poles = list(reversed(self.res.x[self.nzeros:]))
+        zeros = self.res.x[:self.nzeros]
+        poles = self.res.x[self.nzeros:]
         return signal.lti(zeros, poles)
 
     def plot_bode(self):
@@ -115,9 +114,9 @@ class tfest:
             raise Exception("Please run .estimate(npoles, nzeros) before plotting.")
         zeros = self.res.x[:self.nzeros]
         poles = self.res.x[self.nzeros:]
-        risp = np.array([
-            (sum([a*(1j*s)**i for i, a in enumerate(zeros)]))/(sum([b*(1j*s)**i for i, b in enumerate(poles)]))
-            for s in self.frequency])
+        omega = np.array([(1j*s) for s in self.frequency])
+        risp = np.array([np.polyval(zeros, s) for s in omega])
+        risp /= np.array([np.polyval(poles, s) for s in omega])
         plt.plot(np.log(risp), label="estimation")
         plt.plot(np.log(self.H), label="train data")
         plt.legend(loc="upper right")

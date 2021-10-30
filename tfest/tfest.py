@@ -31,7 +31,7 @@ class tfest:
         poles = x[nzeros:]
         risp = np.array([np.polyval(zeros, s) for s in 1j*freq])
         risp /= np.array([np.polyval(poles, s) for s in 1j*freq])
-        return np.square(np.linalg.norm((risp-H).reshape(-1, 1), axis=1)).sum() #+ np.abs(x).sum()
+        return np.linalg.norm((risp-H).reshape(-1, 1), axis=1).sum() #+ np.abs(x).sum()
 
     def frequency_response(self, method="density", time=1):
         """

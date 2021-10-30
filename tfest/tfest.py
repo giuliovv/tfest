@@ -46,7 +46,7 @@ class tfest:
             y_f = fft(self.y)
             u_no_zero = u_f[np.nonzero(u_f)]
             y_no_zero = y_f[np.nonzero(u_f)]
-            frequency = fftfreq(len(u_no_zero), time/len(u_no_zero))
+            frequency = fftfreq(u_f.size, d=time/len(self.u))[np.nonzero(u_f)]
             H = y_no_zero/u_no_zero
         elif method == "density":
             cross_sd, frequency = csd(self.y, self.u)

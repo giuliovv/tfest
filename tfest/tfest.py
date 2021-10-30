@@ -42,8 +42,12 @@ class tfest:
         return: frequency response and frequency
         """
         if method == "fft":
-            frequency = fftfreq(len(self.u), time/len(self.u))
-            H = fft(self.y)/fft(self.u)
+            u_f = fft(self.u)
+            y_f = fft(self.y)
+            u_no_zero = u_f[np.nonzero(u_f)]
+            y_no_zero = y_f[np.nonzero(u_f)]
+            frequency = fftfreq(len(u_no_zero), time/len(u_no_zero))
+            H = y_no_zero/u_no_zero
         elif method == "density":
             cross_sd, frequency = csd(self.y, self.u)
             power_sd, _ = psd(self.u)
@@ -83,7 +87,6 @@ class tfest:
             raise Exception("Please run .estimate(npoles, nzeros) before plotting.")
         zeros = list(reversed(self.res.x[:self.nzeros]))
         poles = list(reversed(self.res.x[self.nzeros:]))
-        print(zeros, poles)
         return signal.lti(zeros, poles)
 
     def plot_bode(self):

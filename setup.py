@@ -1,10 +1,12 @@
 import setuptools
+import tfest
 with open("README.md", "r", encoding="utf-8") as fh:
   README = fh.read()
+version = tfest.__version__
 setuptools.setup(
   name = 'tfest',
   packages = ['tfest'],
-  version = '0.2',
+  version = version,
   license="""MIT""",
   description = """Transfer function estimation based on frequency response.""",
   long_description_content_type="text/markdown",
@@ -12,7 +14,7 @@ setuptools.setup(
   author = 'Giulio Vaccari',
   author_email = 'io@giuliovaccari.it',
   url = 'https://github.com/giuliovv/tfest',
-  download_url = 'https://github.com/giuliovv/tfest/archive/refs/tags/v0.2-alpha.tar.gz',
+  download_url = 'https://github.com/giuliovv/tfest/archive/refs/tags/v'+version+'-alpha.tar.gz',
   keywords = ['tfest', 'frequency', 'matlab'],
   install_requires=[
           'matplotlib',

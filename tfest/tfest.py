@@ -19,12 +19,13 @@ class tfest:
         self.nzeros = 0
         self.init_value = 1
 
-    def loss(self, x, nzeros, freq, H):
+    def loss(self, x, nzeros, freq, H, l=0):
         """
         x: array of zeros and poles
         nzeros: number of zeros
         freq: frequency
         H: frequency response
+        l: L1 norm
 
         return: loss
         """
@@ -32,7 +33,11 @@ class tfest:
         poles = x[nzeros:]
         risp = np.array([np.polyval(zeros, s) for s in 1j*freq])
         risp /= np.array([np.polyval(poles, s) for s in 1j*freq])
-        return np.linalg.norm((risp-H).reshape(-1, 1), axis=1).sum() #+ np.abs(x).sum()
+        if l == 0:
+            L = 0
+        else:
+            L = l*np.sqrt((x**2).sum())
+        return np.linalg.norm((risp-H).reshape(-1, 1), axis=1).sum() + L
 
     def frequency_response(self, method="h1", time=None):
         """
@@ -67,7 +72,7 @@ class tfest:
         self.H = H
         return self.H, frequency
 
-    def estimate(self, nzeros, npoles, init_value=1, options={'xatol': 1e-3, 'disp': True}, method="h1", time=None):
+    def estimate(self, nzeros, npoles, init_value=1, options={'xatol': 1e-3, 'disp': True}, method="h1", time=None, l=0):
         """
         npoles: number of poles
         nzeros: number of zeros
@@ -75,6 +80,7 @@ class tfest:
         options: options for scipy.optimize.minimize
         method: "fft" or "density"
         time: time for fft
+        l: L1 norm
 
         return: scipy.optimize.minimize.OptimizeResult
         """
@@ -86,7 +92,7 @@ class tfest:
 
         x0 = [init_value]*(npoles+nzeros)
         H, frequency = self.frequency_response(method=method, time=time)
-        pass_to_loss = lambda x: self.loss(x, nzeros, frequency, H)
+        pass_to_loss = lambda x: self.loss(x, nzeros, frequency, H, l)
         self.res = minimize(pass_to_loss, x0, method='nelder-mead', options=options)
         return self.res
 

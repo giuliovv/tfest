@@ -28,7 +28,7 @@ Default method to calculate the frequency response Y/U is H1 estimator, if you w
 te.estimate(3, 4, method="h2", time=1)
 te.estimate(3, 4, method="fft", time=1)
 ```
-To use L1 normalization set the value of lambda l (default l=0):
+To use L1 normalization set the value of lambda l1 (default l1=0):
 ```python
-te.estimate(3, 4, time=1, l=0.1)
+te.estimate(3, 4, time=1, l1=0.1)
 ```

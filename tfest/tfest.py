@@ -24,7 +24,7 @@ class tfest:
         nzeros: number of zeros
         freq: frequency
         H: frequency response
-        l1: L1 norm
+        l1: L2 regularization
 
         return: loss
         """
@@ -78,7 +78,7 @@ class tfest:
         options: options for scipy.optimize.minimize
         method: "fft" or "density"
         time: time for fft
-        l1: L1 norm
+        l1: L2 regularization
 
         return: scipy.optimize.minimize.OptimizeResult
         """

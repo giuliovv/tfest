@@ -44,21 +44,22 @@ class tfest:
         if time == None:
             warnings.warn("Setting default time=1")
             time = 1
+        dt = time/len(self.u)
         if method == "fft":
             u_f = fft(self.u)
             y_f = fft(self.y)
             u_no_zero = u_f[np.nonzero(u_f)]
             y_no_zero = y_f[np.nonzero(u_f)]
-            frequency = fftfreq(u_f.size, d=time/len(self.u))[np.nonzero(u_f)]
+            frequency = fftfreq(u_f.size, d=dt)[np.nonzero(u_f)]
             H = y_no_zero/u_no_zero
         elif method == "h1":
             # https://dsp.stackexchange.com/questions/71811/understanding-the-h1-and-h2-estimators
-            cross_sd, frequency = csd(self.y, self.u, Fs=time/len(self.u))
-            power_sd, _ = psd(self.u, Fs=time/len(self.u))
+            cross_sd, frequency = csd(self.u, self.y, Fs=1/dt, NFFT=len(self.u))
+            power_sd, _ = psd(self.u, Fs=1/dt, NFFT=len(self.u))
             H = cross_sd/power_sd
         elif method == "h2":
-            cross_sd, frequency = csd(self.u, self.y, Fs=time/len(self.u))
-            power_sd, _ = psd(self.y, Fs=time/len(self.u))
+            cross_sd, frequency = csd(self.y, self.u, Fs=1/dt, NFFT=len(self.u))
+            power_sd, _ = psd(self.y, Fs=1/dt, NFFT=len(self.u))
             H = power_sd/cross_sd
         else:
             raise Exception("Unknown method")
@@ -66,7 +67,7 @@ class tfest:
         self.H = H
         return self.H, frequency
 
-    def estimate(self, nzeros, npoles, init_value=1, options={'xatol': 1e-2, 'disp': True}, method="density", time=1):
+    def estimate(self, nzeros, npoles, init_value=1, options={'xatol': 1e-3, 'disp': True}, method="h1", time=None):
         """
         npoles: number of poles
         nzeros: number of zeros

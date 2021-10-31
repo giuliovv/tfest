@@ -1,6 +1,6 @@
 # Tfest
 Transfer function estimation with frequency response. Only works for SISO systems for now.
-Python equivalent of MATLAB tfest
+Python equivalent of MATLAB tfest (but the algorithm is not exactly the same)
 
 ### Installation:
 ```shell

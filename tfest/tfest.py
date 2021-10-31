@@ -1,12 +1,12 @@
-import matplotlib.pyplot as plt
-import numpy as np
 import warnings
 
+import matplotlib.pyplot as plt
+import numpy as np
+
 from matplotlib.mlab import psd, csd
+from numpy.fft import fft, fftfreq
 from scipy.optimize import minimize
 from scipy import signal
-
-from numpy.fft import fft, fftfreq
 
 class tfest:
     def __init__(self, u, y):

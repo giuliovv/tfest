@@ -36,7 +36,7 @@ class tfest:
         if l1 == 0:
             L = 0
         else:
-            L = l*np.sqrt((x**2).sum())
+            L = l1*np.sqrt((x**2).sum())
         return np.linalg.norm((risp-H).reshape(-1, 1), axis=1).sum() + L
 
     def frequency_response(self, method="h1", time=None):
@@ -49,6 +49,8 @@ class tfest:
         if time == None:
             warnings.warn("Setting default time=1")
             time = 1
+        # Find the smallest power of 2 greater than or equal to x for NFFT
+        def shift_bit_length(x): return 1<<(x-1).bit_length()
         dt = time/len(self.u)
         if method == "fft":
             u_f = fft(self.u)
@@ -58,13 +60,15 @@ class tfest:
             frequency = fftfreq(u_f.size, d=dt)[np.nonzero(u_f)]
             H = y_no_zero/u_no_zero
         elif method == "h1":
+            NFFT = shift_bit_length(len(self.u))
             # https://dsp.stackexchange.com/questions/71811/understanding-the-h1-and-h2-estimators
-            cross_sd, frequency = csd(self.u, self.y, Fs=1/dt, NFFT=len(self.u))
-            power_sd, _ = psd(self.u, Fs=1/dt, NFFT=len(self.u))
+            cross_sd, frequency = csd(self.u, self.y, Fs=1/dt, NFFT=NFFT)
+            power_sd, _ = psd(self.u, Fs=1/dt, NFFT=NFFT)
             H = cross_sd/power_sd
         elif method == "h2":
-            cross_sd, frequency = csd(self.y, self.u, Fs=1/dt, NFFT=len(self.u))
-            power_sd, _ = psd(self.y, Fs=1/dt, NFFT=len(self.u))
+            NFFT = shift_bit_length(len(self.u))
+            cross_sd, frequency = csd(self.y, self.u, Fs=1/dt, NFFT=NFFT)
+            power_sd, _ = psd(self.y, Fs=1/dt, NFFT=NFFT)
             H = power_sd/cross_sd
         else:
             raise Exception("Unknown method")

@@ -1,6 +1,6 @@
 from tfest.tfest import tfest
 
-__version__ = '0.2'
+__version__ = '0.2.1'
 __author__ = 'Giulio Vaccari'
 __email__ = 'io@giuliovaccari.it'
 __license__ = 'MIT'

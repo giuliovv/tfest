@@ -38,12 +38,12 @@ class tfest:
             L = l1*np.sqrt((x**2).sum())
         return np.linalg.norm((risp-H).reshape(-1, 1), axis=1).sum() + L
 
-    def frequency_response(self, method="h1", time=None):
+    def transfer_function_H(self, method="h1", time=None):
         """
         method: "fft" or "h1" (default) or "h2"
         time: time for fft
 
-        return: frequency response and frequency
+        return: transfer function and frequency
         """
         if time == None:
             warnings.warn("Setting default time=1")
@@ -90,7 +90,7 @@ class tfest:
         self.init_value = init_value
 
         x0 = [init_value]*(npoles+nzeros)
-        H, frequency = self.frequency_response(method=method, time=time)
+        H, frequency = self.transfer_function_H(method=method, time=time)
         pass_to_loss = lambda x: self.loss(x, nzeros, frequency, H, l1)
         self.res = minimize(pass_to_loss, x0, method='nelder-mead', options=options)
         return self.res

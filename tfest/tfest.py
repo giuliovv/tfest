@@ -31,8 +31,7 @@ class tfest:
         """
         zeros = x[:nzeros]
         poles = x[nzeros:]
-        risp = np.array([np.polyval(zeros, s) for s in 1j*freq])
-        risp /= np.array([np.polyval(poles, s) for s in 1j*freq])
+        risp = np.array([np.polyval(zeros, s)/np.polyval(poles, s) for s in 1j*freq])
         if l1 == 0:
             L = 0
         else:
@@ -133,8 +132,7 @@ class tfest:
         zeros = self.res.x[:self.nzeros]
         poles = self.res.x[self.nzeros:]
         omega = np.array([(1j*s) for s in self.frequency])
-        risp = np.array([np.polyval(zeros, s) for s in omega])
-        risp /= np.array([np.polyval(poles, s) for s in omega])
+        risp = np.array([np.polyval(zeros, s)/np.polyval(poles, s) for s in omega])
         plt.plot(np.log(risp), label="estimation")
         plt.plot(np.log(self.H), label="train data")
         plt.legend(loc="upper right")

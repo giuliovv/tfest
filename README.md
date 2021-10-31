@@ -2,7 +2,7 @@
 Transfer function estimation with frequency response. 
 Python equivalent of MATLAB tfest (but the algorithm is not exactly the same)
 
-Only works for SISO systems for now.
+Only works wuth SISO systems for now.
 
 
 ### Installation:

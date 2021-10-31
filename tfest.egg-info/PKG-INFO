@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: tfest
-Version: 0.2.1
+Version: 0.2.2
 Summary: Transfer function estimation based on frequency response.
 Home-page: https://github.com/giuliovv/tfest
 Author: Giulio Vaccari
 Author-email: io@giuliovaccari.it
 License: MIT
-Download-URL: https://github.com/giuliovv/tfest/archive/refs/tags/v0.2.1-alpha.tar.gz
+Download-URL: https://github.com/giuliovv/tfest/archive/refs/tags/v0.2.2-alpha.tar.gz
 Description: # Tfest
         Transfer function estimation with frequency response. Only works for SISO systems for now.
         Python equivalent of MATLAB tfest
@@ -37,9 +37,9 @@ Description: # Tfest
         te.estimate(3, 4, method="h2", time=1)
         te.estimate(3, 4, method="fft", time=1)
         ```
-        To use L1 normalization set the value of lambda l (default l=0):
+        To use L1 normalization set the value of lambda l1 (default l1=0):
         ```python
-        te.estimate(3, 4, time=1, l=0.1)
+        te.estimate(3, 4, time=1, l1=0.1)
         ```
         
 Keywords: tfest,frequency,matlab

@@ -17,7 +17,6 @@ class tfest:
         self.H = None
         self.npoles = 0
         self.nzeros = 0
-        self.init_value = 1
 
     def loss(self, x, nzeros, freq, H, l1=0):
         """
@@ -75,7 +74,7 @@ class tfest:
         """
         npoles: number of poles
         nzeros: number of zeros
-        init_value: initial value for optimization
+        init_value: mean for distribution of initial values
         options: options for scipy.optimize.minimize
         method: "fft" or "density"
         time: time for fft
@@ -87,9 +86,8 @@ class tfest:
         nzeros += 1
         self.npoles = npoles
         self.nzeros = nzeros
-        self.init_value = init_value
 
-        x0 = [init_value]*(npoles+nzeros)
+        x0 = np.random.normal(init_value, 1, nzeros+npoles)
         H, frequency = self.transfer_function_H(method=method, time=time)
         pass_to_loss = lambda x: self.loss(x, nzeros, frequency, H, l1)
         self.res = minimize(pass_to_loss, x0, method='nelder-mead', options=options)

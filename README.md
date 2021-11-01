@@ -1,4 +1,6 @@
 # Tfest
+[![Downloads](https://static.pepy.tech/personalized-badge/tfest?period=total&units=international_system&left_color=black&right_color=red&left_text=Downloads)](https://pepy.tech/project/tfest)
+
 Transfer function estimation with frequency response. 
 Python equivalent of MATLAB tfest (but the algorithm is not exactly the same)
 
